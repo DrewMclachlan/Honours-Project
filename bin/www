@@ -34,7 +34,15 @@ var io = require('socket.io').listen(server);
 
 
 io.on('connection', function(socket){
+    socket.on('message', function(msg){
+      console.log('m:' + msg);
+      io.emit('message', msg);
+    });
     console.log('a user has been connected');
+});
+
+io.on('disconnect', function(){
+  console.log('user disconnect')
 });
 
 server.listen(port);
