@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var db = require('mongoose');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,6 +20,19 @@ app .use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Session
+app.use(session({
+    secret: 'drew',
+    saveUninitialized: false,
+    resave: false
+}));
+
+//DB
+db.connect('mongodb://localhost:27017/test')
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
