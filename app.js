@@ -34,7 +34,7 @@ db.connect('mongodb://localhost:27017/test')
     .catch(err => console.log(err));
 
 
-app.use('/', indexRouter);
+app.use('/drew', indexRouter);
 app.use('/users', usersRouter);
 
 
