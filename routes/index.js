@@ -6,16 +6,21 @@ var Message = require('../schema/message');
 router.get('/', function(req, res, next) {
   //res.render('index', { title: 'Express' });
   //res.write('hello');
-  res.write(req.session.username);
-  res.end();
+    Message.find()
+      .then(message => res.json(message))
+
+   console.log(req.session.username);
+ // res.end();
 });
 
 router.post('/', function(req,res,next){
     const newMessage = new Message({
-        op: req.session.username,
+       // op: req.session.username,
+        op: req.body.op,
         content: req.body.content,
     });
     newMessage.save()
+    res.redirect('/')
 });
 
 
