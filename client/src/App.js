@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import {Breadcrumb} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './components/navbar.js'
+import Message from './components/message'
 
 import './App.css';
+import Container from "reactstrap/es/Container";
+import Row from "reactstrap/es/Row";
+import Col from "reactstrap/es/Col";
 
 class App extends Component {
     state = { users: [] };
@@ -21,18 +26,25 @@ class App extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({content: this.state.content}),
-        })
+        });
+
+        const body = await response.text();
+        this.setState({responseToPost: body })
 
     }
     render() {
     return (
       <div className="App">
        <Navbar/>
-          <ul>
+
+        <div className={"float-right"} style={{width:"40%", marginRight:300}} >
           {this.state.users.map(user =>
-              <li key={user.id}>{user.content}</li>
+              <Message m={user.content}/>
           )}
-              </ul>
+        </div>
+
+
+
           <form onSubmit={this.handleSubmit}>
               <p>
                   <strong>Post to Server:</strong>
