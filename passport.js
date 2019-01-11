@@ -1,0 +1,33 @@
+var localStrategy = require('passport-local').Strategy;
+var User = require('./schema/user')
+
+console.log(1);
+module.exports = function (passport) {
+    passport.serializeUser(function (user, done) {
+        done(null, user)
+    })
+    passport.deserializeUser(function (user, done) {
+        done(null, user)
+    })
+    passport.use(new localStrategy(function (username, password, done) {
+        User.findOne({
+            username: username
+        }, function (err, user) {
+            if (err) {
+                done(err)
+            } else {
+                if (user) {
+                    if (password === user.password) {
+                        done(null, {
+                            username: user.username,
+                        })
+                    } else {
+                        done(null, false)
+                    }
+                } else {
+                    done(null, false)
+                }
+            }
+        })
+    }))
+}

@@ -46,7 +46,7 @@ export default class Login extends React.Component {
         var  redirect  = this.state.redirect
         console.log(redirect)
         console.log(this.state.redirect)
-        if (redirect) return <Redirect to={'/home'}/>
+        if (redirect) return <Redirect to={'/'}/>
         return (
             <div>
                 <Navbar/>
@@ -86,7 +86,7 @@ export default class Login extends React.Component {
                             </FormGroup>
                         </Col>
                     </Row>
-                    <Button>Sign in</Button>
+                    <Button>Sign Up</Button>
 
 
 
