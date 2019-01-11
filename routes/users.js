@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next){
+    console.log('in post')
     const newUser = new User({
         username: req.body.username,
         email: req.body.email,
@@ -17,6 +18,5 @@ router.post('/', function(req, res, next){
     })
     newUser.save()
     req.session.username = req.body.username;
-    res.redirect('/');
 });
 module.exports = router;
