@@ -6,18 +6,23 @@ module.exports = function (passport) {
 
 router.get('/', function (req, res) {
     res.send('login');
+    console.log('hellp');
 })
 
 router.get('/home', function (req, res) {
     res.send('home');
+    console.log(req.body)
 })
 
-    router.post('/', passport.authenticate('local', {
+    router.post('/', function(req, res, next){
+        console.log(req.body)
+        req.session.username = req.body.username
+        next()
+    }, passport.authenticate('local', {
         failureRedirect: '/login',
         successRedirect: '/login/home',
     }), function (req, res) {
-        console.log(1)
-        res.send('err')
+        console.log(2);
     })
 
     router.post('/drew', function (req, res) {

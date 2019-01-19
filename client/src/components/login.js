@@ -3,7 +3,8 @@ import Navbar from "./navbar";
 import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import {
     Route,
-    Link
+    Link,
+    Redirect
 } from 'react-router-dom'
 import Signup from './signup'
 import Home from './home'
@@ -19,9 +20,7 @@ export default class Login extends React.Component {
     };
 
     handleSubmit = async e => {
-
         e.preventDefault();
-
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
@@ -39,7 +38,7 @@ export default class Login extends React.Component {
         render() {
         if (this.state.auth === 'home'){
             return(
-                <Home/>
+               <Redirect to='/home'/>
             )
         }
         return (

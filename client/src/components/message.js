@@ -11,7 +11,7 @@ export default class Message extends React.Component {
         return (
             <div>
             <Card style={{margin:10}}>
-                <CardHeader className={"text-left"} >Drew</CardHeader>
+                <CardHeader className={"text-left"} >{this.props.u}</CardHeader>
                 <CardBody>
                 <CardText className={"text-left"}>m: {this.props.m}</CardText>
                 </CardBody>

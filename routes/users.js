@@ -17,6 +17,5 @@ router.post('/', function(req, res, next){
         password: req.body.password
     })
     newUser.save()
-    req.session.username = req.body.username;
 });
 module.exports = router;

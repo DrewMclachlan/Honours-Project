@@ -2,26 +2,44 @@ var express = require('express');
 var router = express.Router();
 var Message = require('../schema/message');
 
+
+var loggedin = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        next()
+    } else {
+        res.redirect('/login')
+    }
+};
+
+function addDb (op, content){
+    const newMessage = new Message({
+        op: op,
+        content: content,
+    });
+    newMessage.save()
+};
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', loggedin, function(req, res, next) {
   //res.render('index', { title: 'Express' });
   //res.write('hello');
+    console.log(req.session.username)
     Message.find()
       .then(message => res.json(message))
-
-  // console.log(req.session.username);
  // res.end();
 });
 
 router.post('/', function(req,res,next){
-    console.log(req.body)
-    const newMessage = new Message({
-       // op: req.session.username,
-        op: 'drew',
-        content: req.body.content,
-    });
-    newMessage.save()
-   // res.redirect('/')
+    var op = req.session.username;
+    var content = req.body.content
+
+    addDb(op, content)
+     setTimeout(function(){
+         Message.find()
+             .then(message => res.json(message))
+     }, 10);
+    //add promise at somepoint
+
 });
 
 
