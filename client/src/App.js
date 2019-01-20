@@ -13,7 +13,18 @@ import Container from "reactstrap/es/Container";
 import Row from "reactstrap/es/Row";
 import Col from "reactstrap/es/Col";
 
+import socketIOClient from "socket.io-client";
+
+
+
+
+
 class App extends Component {
+
+    componentDidMount() {
+        const socket = socketIOClient('localhost:4000')
+    }
+
     render() {
     return (
 

@@ -29,14 +29,20 @@ router.get('/', loggedin, function(req, res, next) {
  // res.end();
 });
 
+router.get('/socket', function(req, res){
+    console.log('im here');
+
+});
+
+
 router.post('/', function(req,res,next){
+  //  req.app.io.emit('test', {key:'value'})
     var op = req.session.username;
     var content = req.body.content
-
     addDb(op, content)
      setTimeout(function(){
          Message.find()
-             .then(message => res.json(message))
+             .then(message => req.app.io.emit('test', message))
      }, 10);
     //add promise at somepoint
 
