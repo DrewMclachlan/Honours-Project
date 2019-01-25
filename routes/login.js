@@ -22,7 +22,6 @@ router.get('/home', function (req, res) {
         failureRedirect: '/login',
         successRedirect: '/login/home',
     }), function (req, res) {
-        console.log(2);
     })
 
     router.post('/drew', function (req, res) {

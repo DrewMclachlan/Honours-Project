@@ -3,6 +3,7 @@ var router = express.Router();
 var Message = require('../schema/message');
 
 
+
 var loggedin = function (req, res, next) {
     if (req.isAuthenticated()) {
         next()
@@ -19,6 +20,8 @@ function addDb (op, content){
     newMessage.save()
 };
 
+
+
 /* GET home page. */
 router.get('/', loggedin, function(req, res, next) {
   //res.render('index', { title: 'Express' });
@@ -29,15 +32,11 @@ router.get('/', loggedin, function(req, res, next) {
  // res.end();
 });
 
-router.get('/socket', function(req, res){
-    console.log('im here');
-
-});
 
 
 router.post('/', function(req,res,next){
   //  req.app.io.emit('test', {key:'value'})
-    var op = req.session.username;
+    var op = 'drew';
     var content = req.body.content
     addDb(op, content)
      setTimeout(function(){

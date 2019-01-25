@@ -2,41 +2,42 @@ import React from 'react';
 import Navbar from "./navbar";
 import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import {
-    Route,
     Link,
     Redirect
 } from 'react-router-dom'
-import Signup from './signup'
-import Home from './home'
+
 
 
 
 
 export default class Login extends React.Component {
-    state = {
-        users: [],
-        auth: ''
+    constructor() {
+        super()
+        this.state = {
+            users: [],
+            auth: ''
 
-    };
+        };
+        this.handleData = this.handleData.bind(this)
+
+    }
+
+    handleData (data) {
+        console.log('here2' + data);
+        this.setState({auth: data});
+    }
+
 
     handleSubmit = async e => {
         e.preventDefault();
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username: this.state.username, password: this.state.password}),
-        })
+        const socket = this.props.s;
+        socket.emit('userL', {username: this.state.username, password: this.state.password})
+        socket.on('auth', this.handleData)
+    };
 
-        const body = await response.text();
-        console.log(body);
-        this.setState({auth: body })
 
-    }
-        //change so that instead of rendering, it redirects
         render() {
-        if (this.state.auth === 'home'){
+        if (this.state.auth === 'auth'){
             return(
                <Redirect to='/home'/>
             )

@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from "./navbar";
 import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Redirect } from 'react-router-dom'
+import socketIOClient from "socket.io-client";
 
 
 
@@ -17,34 +18,17 @@ export default class Login extends React.Component {
     };
 
     handleSubmit = async e => {
-        console.log(3)
-        this.setState({redirect: true})
-        console.log(this.state.redirect)
         e.preventDefault();
-
-        const response = await fetch('/users', {
-            method: 'POST',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username: this.state.username, email: this.state.email, password: this.state.password}),
-        })
-
-
-        const body = await response.text();
-        this.setState({responseToPost: body })
-
-
-
-    }
+        const socket = this.props.s;
+        socket.emit('userS', {username: this.state.username, email: this.state.email, password: this.state.password})
+        this.setState({redirect: true})
+    };
 
 
 
 
     render() {
-        console.log(2)
         var  redirect  = this.state.redirect
-        console.log(redirect)
         console.log(this.state.redirect)
         if (redirect) return <Redirect to={'/'}/>
         return (

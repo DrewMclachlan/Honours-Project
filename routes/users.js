@@ -11,11 +11,15 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
     console.log('in post')
+    //req.app.io.on('user', function(data){
+    //  console.log(data);
+
     const newUser = new User({
-        username: req.body.username,
+      username: req.body.username,
         email: req.body.email,
-        password: req.body.password
-    })
-    newUser.save()
+       password: req.body.password
+   })
+   newUser.save()
+    res.end()
 });
 module.exports = router;

@@ -8,7 +8,8 @@
 var app = require('../app');
 var debug = require('debug')('honours-project:server');
 var http = require('http');
-
+var handlers = require('../routes/handlers');
+var Message = require('../schema/message');
 
 /**
  * Get port from environment and store in Express.
@@ -24,6 +25,8 @@ app.set('port', port);
 
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
+//io.set('transports', ['websocket']);
+
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -31,17 +34,54 @@ var io = require('socket.io').listen(server);
 app.io = io;
 
 
-io.on('connection', function(socket){
-    socket.on('message', function(msg){
-      console.log('m:' + msg);
-      io.emit('message', msg);
-    });
+
+
+io.on('connection', function(socket) {
     console.log('a user has been connected');
+
+    socket.on('userS', function (data) {
+       handlers.add(data.username, data.email, data.password)
+
+    });
+
+    socket.on('userL', function(data) {
+      handlers.check(data.username, data.password)
+          .then(function(result){
+            console.log(result);
+            if(result === 'auth'){
+              socket.emit('auth','auth')
+            }else{
+              socket.emit('auth','incorrect')
+            }
+          })
+    });
+
+    socket.on('send', function(){
+        setTimeout(function(){
+            Message.find()
+                .then(msglist => socket.emit('getlist', msglist))
+        }, 10);
+
+          })
+
+
+    socket.on('message', function(msg) {
+        handlers.message(msg);
+        setTimeout(function () {
+            Message.find()
+                .then(message => io.sockets.emit('test', message))
+        }, 10);
+    })
+
+
 });
 
 io.on('disconnect', function(){
-  console.log('user disconnect')
+ // console.log('user disconnect')
 });
+
+
+
 
 server.listen(port);
 server.on('error', onError);
