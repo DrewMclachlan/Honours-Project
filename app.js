@@ -5,19 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var db = require('mongoose');
 var session = require('express-session');
-var passport = require('passport')
-require('./passport')(passport)
 
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login')(passport);
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 
 
 app.use(logger('dev'));
@@ -33,18 +23,10 @@ app.use(session({
     resave: false
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 //DB
 db.connect('mongodb://localhost:27017/test')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
-
-
-app.use('/drew', indexRouter);
-app.use('/users', usersRouter);
-app.use('/login', loginRouter);
 
 
 // catch 404 and forward to error handler
