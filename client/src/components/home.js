@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Label, Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 import Navbar from './navbar.js'
 import Message from './message.js'
 import '../App.css';
@@ -8,11 +10,19 @@ class Homepage extends Component {
         super();
         this.state = {
             users: [],
-            test: 'drew'
+            test: 'drew',
+            modal: false
         };
-
+        this.toggle = this.toggle.bind(this);
         this.handleData = this.handleData.bind(this)
     }
+
+    toggle(){
+        this.setState({
+            modal: !this.state.modal
+        });
+    }
+
     componentDidMount() {
         const socket = this.props.s;
         socket.emit('send', 'test');
@@ -43,17 +53,38 @@ class Homepage extends Component {
                         <Message u={user.op} m={user.content} />
                     )}
                 </div>
-                <form onSubmit={this.handleSubmit}>
-                    <p>
-                        <strong>Post to Server:</strong>
-                    </p>
-                    <input
-                        type="text"
-                        value={this.state.post}
-                        onChange={e => this.setState({ content: e.target.value })}
-                    />
-                    <button type="submit">Submit</button>
-                </form>
+
+
+                <div>
+                <br/>
+                    <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
+                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                        <ModalHeader toggle={this.toggle}>Write a Message!</ModalHeader>
+                        <ModalBody>
+                            <Form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <Input
+                                    type="textarea"
+                                    name="text" id="exampleText"
+                                    value={this.state.post}
+                                    onChange={e => this.setState({ content: e.target.value })}
+                                />
+                            </FormGroup>
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    onClick={this.toggle}>
+                                    Do Something
+                                </Button>{' '}
+                                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                            </Form>
+                        </ModalBody>
+                    </Modal>
+                </div>
+
+
+
+
             </div>
         );
     }
