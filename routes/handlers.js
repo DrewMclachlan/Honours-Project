@@ -3,7 +3,7 @@ var User = require('../schema/user');
 
 
 //User Sign Up
-function addUser(username, password, email){
+function addUser(username, email, password){
     const newUser = new User({
         username: username,
         email: email,
@@ -12,7 +12,7 @@ function addUser(username, password, email){
     newUser.save()
 }
 
-//User Login functions
+//User Login functions§
 function checkUserDB(username, password){
     return new Promise(function(resolve, reject) {
         console.log(username);
@@ -21,6 +21,7 @@ function checkUserDB(username, password){
             username: username
         })
             .then(doc => {
+                console.log(doc);
                 if (doc.password === password) {
                     console.log('yeah');
                     resolve('auth');
@@ -46,12 +47,39 @@ function addDb (op, content){
     newMessage.save()
 };
 
-function message(m){
-    addDb('drew', m)
+function message(user, content){
+    addDb(user, content)
+}
+
+
+//find Profile Name
+function findProfileMessages(profileName){
+   var content = [];
+    return new Promise(function(resolve, reject) {
+        Message.find({
+            op: profileName
+        })
+            .then(doc => {
+                var x = JSON.parse(JSON.stringify(doc));
+                var y = Object.values(x)
+                if (y.length > 3) {
+                    y = y.slice(Math.max(y.length - 3, 1))
+                }
+
+                y.forEach(function (element) {
+                  //  console.log(element.content);
+                    content.push(element.content);
+                   // console.log(content)
+                })
+                resolve(content)
+            });
+    })
+
 }
 
 module.exports = {
     message: message,
     check: checkUserDB,
-    add: addUser
+    add: addUser,
+    findPM: findProfileMessages
 };

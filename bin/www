@@ -40,7 +40,9 @@ io.on('connection', function(socket) {
     console.log('a user has been connected');
 
     socket.on('userS', function (data) {
-       handlers.add(data.username, data.email, data.password)
+        console.log(data.username, data.email, data.password)
+
+        handlers.add(data.username, data.email, data.password)
 
     });
 
@@ -66,11 +68,20 @@ io.on('connection', function(socket) {
 
 
     socket.on('message', function(msg) {
-        handlers.message(msg);
+        handlers.message(msg.user, msg.content);
         setTimeout(function () {
             Message.find()
                 .then(message => io.sockets.emit('test', message))
         }, 10);
+    })
+
+    socket.on('pname', function(pname) {
+        console.log(pname);
+        handlers.findPM(pname)
+        .then(function(result){
+            console.log(result);
+            socket.emit('transfer', {result, pname})
+        })
     })
 
 

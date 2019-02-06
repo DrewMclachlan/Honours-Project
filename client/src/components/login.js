@@ -22,6 +22,10 @@ export default class Login extends React.Component {
 
     }
 
+    componentDidMount() {
+        localStorage.clear();
+    }
+
     handleData (data) {
         console.log('here2' + data);
         this.setState({auth: data});
@@ -31,6 +35,8 @@ export default class Login extends React.Component {
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
+       var uname = this.state.username;
+       localStorage.setItem('user', uname);
         socket.emit('userL', {username: this.state.username, password: this.state.password})
         socket.on('auth', this.handleData)
     };
