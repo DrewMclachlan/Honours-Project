@@ -1,8 +1,7 @@
 import React from 'react';
 import Navbar from "./navbar";
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Redirect } from 'react-router-dom'
-import socketIOClient from "socket.io-client";
 
 
 

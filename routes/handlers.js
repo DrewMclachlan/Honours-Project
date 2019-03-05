@@ -1,3 +1,5 @@
+
+
 var Message = require('../schema/message');
 var User = require('../schema/user');
 
@@ -45,6 +47,7 @@ function addDb (op, content){
         content: content,
     });
     newMessage.save()
+
 };
 
 function message(user, content){
@@ -70,16 +73,40 @@ function findProfileMessages(profileName){
                   //  console.log(element.content);
                     content.push(element.content);
                    // console.log(content)
-                })
+                });
                 resolve(content)
             });
     })
 
 }
 
+//Search for userProfile
+function search(searchq){
+var searchname;
+return new Promise(function(resolve, reject){
+    User.find({
+        username: searchq
+    })
+    //make this cleaner
+        .then(doc =>{
+           var x = JSON.parse(JSON.stringify(doc))
+            x.forEach(function (element) {
+                searchname = element.username;
+                resolve(searchname)
+            });
+        })
+            .catch(err =>{
+                reject(err);
+            })
+})
+}
+
+
+
 module.exports = {
     message: message,
     check: checkUserDB,
     add: addUser,
-    findPM: findProfileMessages
+    findPM: findProfileMessages,
+    search: search
 };

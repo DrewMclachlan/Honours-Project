@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from "./navbar";
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import {
     Link,
     Redirect
@@ -21,6 +21,9 @@ export default class Login extends React.Component {
         this.handleData = this.handleData.bind(this)
 
     }
+
+
+
 
     componentDidMount() {
         localStorage.clear();

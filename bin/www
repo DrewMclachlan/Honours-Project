@@ -63,26 +63,41 @@ io.on('connection', function(socket) {
             Message.find()
                 .then(msglist => socket.emit('getlist', msglist))
         }, 10);
-
-          })
+          });
 
 
     socket.on('message', function(msg) {
         handlers.message(msg.user, msg.content);
         setTimeout(function () {
             Message.find()
-                .then(message => io.sockets.emit('test', message))
-        }, 10);
+                .then(
+                    message => io.sockets.emit('test', message))
+        }, 50);
     })
 
     socket.on('pname', function(pname) {
         console.log(pname);
-        handlers.findPM(pname)
-        .then(function(result){
-            console.log(result);
-            socket.emit('transfer', {result, pname})
-        })
+        profile(pname)
+    });
+
+    socket.on('search', function(data){
+        handlers.search(data)
+            .then(function(searchname){
+                console.log(searchname);
+                //add validation
+                profile(searchname)
+            })
     })
+
+    function profile (pname){
+        handlers.findPM(pname)
+            .then(function(result){
+                console.log(result);
+                socket.emit('transfer', {result, pname})
+            })
+    }
+
+
 
 
 });

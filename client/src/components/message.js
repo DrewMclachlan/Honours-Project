@@ -5,10 +5,13 @@ import CardHeader from "reactstrap/es/CardHeader";
 import CardBody from "reactstrap/es/CardBody";
 
 export default class Message extends React.Component {
+
+   //add: onClick={() => this.handleClick(this.props.u)}
+    //back in
     handleClick = function(event){
         const socket = this.props.s;
         socket.emit('pname', event);
-    };
+   };
     render() {
         return (
             <div>
