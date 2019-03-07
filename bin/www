@@ -67,11 +67,15 @@ io.on('connection', function(socket) {
 
 
     socket.on('message', function(msg) {
-        handlers.message(msg.user, msg.content);
+        handlers.message(msg.user, msg.content, msg.time);
         setTimeout(function () {
-            Message.find()
-                .then(
-                    message => io.sockets.emit('test', message))
+            Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
+                console.log(port);
+                io.sockets.emit('newmsg', port);
+            })
+               //.then(
+               //    message => io.sockets.emit('test', message))
+           // io.sockets.emit('newmsg', msg);
         }, 50);
     })
 

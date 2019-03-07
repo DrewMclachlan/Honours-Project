@@ -3,7 +3,7 @@ import Card from "reactstrap/es/Card";
 import CardText from "reactstrap/es/CardText";
 import CardHeader from "reactstrap/es/CardHeader";
 import CardBody from "reactstrap/es/CardBody";
-
+import CardFooter from "reactstrap/es/CardBody";
 export default class Message extends React.Component {
 
    //add: onClick={() => this.handleClick(this.props.u)}
@@ -20,6 +20,7 @@ export default class Message extends React.Component {
                 <CardBody>
                 <CardText className={"text-left"}>m: {this.props.m}</CardText>
                 </CardBody>
+                <CardFooter className={"text-right"}>time: {this.props.t} </CardFooter>
             </Card>
             </div>
         )

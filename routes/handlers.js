@@ -41,17 +41,21 @@ function checkUserDB(username, password){
 
 //Home page functions
 //Add message
-function addDb (op, content){
+function addDb (op, content, time){
+   // var mongoose = require('mongoose');
+   // var id = mongoose.Types.ObjectId();
     const newMessage = new Message({
+       // _id: id,
         op: op,
         content: content,
+        time:time
     });
     newMessage.save()
 
 };
 
-function message(user, content){
-    addDb(user, content)
+function message(user, content, time){
+    addDb(user, content, time)
 }
 
 

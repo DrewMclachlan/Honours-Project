@@ -1,6 +1,7 @@
 import React from 'react';
 import { Collapse, Card, Button, CardTitle} from 'reactstrap';
 import Pmessage from './pmessage'
+import CardImg from "reactstrap/es/CardImg";
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -16,10 +17,14 @@ export default class Profile extends React.Component {
 return(
 <div>
 <Card body inverse color="danger">
-    <CardTitle>{this.props.pname}</CardTitle>
+    <CardTitle className={"text-left"}><img src={require("../no-profile.png")} height={50} width={50}/>  |  {this.props.pname}
 
-    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>T</Button>
-    
+        <Button className={"float-right"} color="primary" onClick={this.toggle} style={{ marginBottom: '1rem', marginTop:'7px'}}>T</Button>
+
+    </CardTitle>
+
+
+
     <Collapse isOpen={this.state.collapse}>
     {this.props.result.map(result =>
     <Pmessage m={result}/>

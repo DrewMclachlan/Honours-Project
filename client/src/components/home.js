@@ -41,37 +41,60 @@ class Homepage extends Component {
         this.setState({user: localStorage.getItem('user')});
         const socket = this.props.s;
         socket.emit('send', 'test');
-        socket.on('getlist', this.handleData)
-        socket.on('test', this.handleData)
+        socket.on('getlist', this.handleData);
+        socket.on('test', this.handleData);
         socket.on('transfer', this.handleProfileD)
+        socket.on('newmsg', this.test);
+    }
+
+    test(msg){
+        console.log(msg[0]);
+        console.log('before', this.state.messages)
+        var x = this.state.messages
+        x.unshift(msg[0]);
+        console.log('after:', x);
+        this.setState({messages: x});
+        this.forceUpdate();
+        if(this.state.toggleProfile === true){
+            console.log('A', msg[0].op);
+            console.log('B', this.state.profileu);
+            if(msg[0].op === this.state.profileu){
+                var t = this.state.profilem;
+                t.unshift(msg[0].content)
+                if(t.length >= 3){
+                    t.pop()
+                }
+                this.setState({profilem:t});
+            }
+        }
     }
 
     handleProfileD (data){
         console.log(data);
-        if(this.state.toggleProfile === false)
-        {
+       // if(this.state.toggleProfile === false)
+        //{
             this.setState({profileu: data.pname});
             this.setState({profilem: data.result.reverse()});
             this.setState({toggleProfile: true});
-        }else if(this.state.hello === false) {
-            this.setState({profileu2: data.pname});
-            this.setState({profilem2:data.result.reverse()});
-            this.setState({hello: true})
-        }else if(this.state.test123 === false){
-            this.setState({profileu3: data.pname});
-            this.setState({profilem3: data.result.reverse()});
-            this.setState({toggleProfile: true});
-            this.setState({test123:true})
-        }
+        //}else if(this.state.hello === false) {
+        //    this.setState({profileu2: data.pname});
+        //    this.setState({profilem2:data.result.reverse()});
+        //    this.setState({hello: true})
+        //}else if(this.state.test123 === false){
+         //   this.setState({profileu3: data.pname});
+        //    this.setState({profilem3: data.result.reverse()});
+        //    this.setState({toggleProfile: true});
+        //    this.setState({test123:true})
+       // }
     }
 
-    handleData (data) {
-        this.setState({messages: [...data].reverse()});
-        if(this.state.toggleProfile === true){
-            const socket = this.props.s;
-            socket.emit('pname', this.state.profileu);
-        }
-    }
+  ///  handleData (data) {
+    //    this.setState({messages: [...data].reverse()});
+      //  if(this.state.toggleProfile === true){
+       //     const socket = this.props.s;
+        //    socket.emit('pname', this.state.profileu);
+       // }
+   // }
 
     search = async e =>{
         e.preventDefault();
@@ -85,13 +108,12 @@ class Homepage extends Component {
         const socket = this.props.s;
         console.log(this.state.user);
         console.log(this.state.content);
-        socket.emit('message', {user:this.state.user, content:this.state.content});
+        var time = new Date().toLocaleTimeString().toString();
+        console.log(typeof(time));
+        socket.emit('message', {user:this.state.user, content:this.state.content, time:time});
         console.log('sent');
     };
 
-    test(){
-        console.log('event');
-    };
 
 
     render() {
@@ -120,10 +142,12 @@ class Homepage extends Component {
                         this.state.toggleProfile &&
                         <Profile pname={this.state.profileu} result={this.state.profilem}/>
                     }
+                    <br/>
                     {
                         this.state.hello &&
                         <Profile pname={this.state.profileu2} result={this.state.profilem2}/>
                     }
+                <br/>
                     {
                         this.state.test123 &&
                         <Profile pname={this.state.profileu3} result={this.state.profilem3}/>
@@ -131,11 +155,8 @@ class Homepage extends Component {
                 </div>
                 <div className={"float-right"} style={{width:"40%", marginRight:50}} >
                     {
-                        console.log(this.state.messages)
-                    }
-                    {
                         this.state.messages.map(user =>
-                        <Message key={user._id} u={user.op} m={user.content} s={this.props.s}/>
+                        <Message key={user._id} u={user.op} m={user.content} t={user.time} s={this.props.s}/>
                     )
                     }
 
