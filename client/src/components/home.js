@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, } from 'reactstrap';
-
+import {
+    Link,
+} from 'react-router-dom'
+import { Container, Row, Col } from 'reactstrap';
 import Navbar from './navbar.js'
 import Message from './message.js'
 import Profile from './profile.js'
@@ -124,6 +127,8 @@ class Homepage extends Component {
         return (
             <div className="App">
                 <Navbar/>
+                <Row>
+                    <Col xs="6" sm="4">
                 <Form onSubmit={this.search}>
                     <FormGroup>
                         <Input
@@ -138,10 +143,22 @@ class Homepage extends Component {
                             Search
                         </Button>
                     </FormGroup>
-                </Form>
-                <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
+                    </Form>
+                    <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
+                    <br/>
+                    <br/>
+                    <Button color="danger" tag={Link} to ="/">Sign out</Button>
+                    </Col>
 
-                <div className={"float-right"} style={{width:"30%", marginTop:80, marginRight:100}}>
+                    <Col xs="6" sm="4">
+                        {
+                            this.state.messages.map(user =>
+                                <Message key={user._id} u={user.op} m={user.content} t={user.time} s={this.props.s}/>
+                            )
+                        }
+                    </Col>
+
+                    <Col xs="6" sm="4">
                     {
                         this.state.toggleProfile &&
                         <Profile pname={this.state.profileu} result={this.state.profilem}/>
@@ -151,24 +168,16 @@ class Homepage extends Component {
                         this.state.hello &&
                         <Profile pname={this.state.profileu2} result={this.state.profilem2}/>
                     }
-                <br/>
+                    <br/>
                     {
                         this.state.test123 &&
                         <Profile pname={this.state.profileu3} result={this.state.profilem3}/>
                     }
-                </div>
-                <div className={"float-right"} style={{width:"40%", marginRight:50}} >
-                    {
-                        this.state.messages.map(user =>
-                        <Message key={user._id} u={user.op} m={user.content} t={user.time} s={this.props.s}/>
-                    )
-                    }
+                    </Col>
 
-                </div>
 
                 <div>
                 <br/>
-
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>Write a Message!</ModalHeader>
                         <ModalBody>
@@ -195,8 +204,9 @@ class Homepage extends Component {
 
 
 
-
+                </Row>
             </div>
+
         );
     }
 }
