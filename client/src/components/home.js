@@ -9,30 +9,44 @@ import Navbar from './navbar.js'
 import Message from './message.js'
 import Profile from './profile.js'
 import '../App.css';
-import Nav from "reactstrap/es/Nav";
 class Homepage extends Component {
     constructor() {
         super();
         this.state = {
-            messages: [],
-            test: 'drew',
-            modal: false,
-            user: '',
-            profileu:'',
-            profilem:'',
-            profileu2:'',
-            profilem2:'',
-            profileu3:'',
-            profilem3:'',
-            toggleProfile: false,
-            hello: false,
-            test123: false
+            messages: [], test: 'drew', modal: false, user: '', profileu:'',
+            profilem:'', profileu2:'', profilem2:'', profileu3:'', profilem3:'',
+            toggleProfile: false, hello: false, test123: false, data: ''
         };
         this.toggle = this.toggle.bind(this);
         this.handleProfileD = this.handleProfileD.bind(this);
         this.test = this.test.bind(this);
         this.innit = this.innit.bind(this);
+        this.childHandler = this.childHandler.bind(this)
+        this.drew = this.drew.bind(this);
     }
+
+    childHandler(dataFromChild) {
+        this.setState({
+            data: dataFromChild
+        },() => this.drew())
+        }
+
+        drew() {
+            if(this.state.data)
+            switch (this.state.data) {
+                case this.state.data = this.state.profileu:
+                    this.setState({toggleProfile:false})
+                    console.log(this.state.toggleProfile)
+                    break;
+                case this.state.data = this.state.profileu2:
+                    this.setState({hello: false})
+                    break;
+                case this.state.data = this.state.profileu3:
+                    this.setState({test123: false})
+                    break;
+            }
+
+        }
 
     toggle(){
         this.setState({
@@ -55,53 +69,71 @@ class Homepage extends Component {
     }
 
     test(msg){
-        console.log(msg[0]);
-        console.log('before', this.state.messages)
         var x = this.state.messages
         x.unshift(msg[0]);
-        console.log('after:', x);
         this.setState({messages: x});
         this.forceUpdate();
-        if(this.state.toggleProfile === true){
-            console.log('A', msg[0].op);
-            console.log('B', this.state.profileu);
-            if(msg[0].op === this.state.profileu){
-                var t = this.state.profilem;
-                t.unshift(msg[0].content)
-                if(t.length >= 3){
-                    t.pop()
+        if(this.state.toggleProfile || this.state.hello || this.state.test123 === true){
+            console.log('here');
+            var op = msg[0].op
+            console.log(op);
+            //if(msg[0].op === this.state.profileu || this.state.profileu2 || this.state.profileu3){
+                switch(op) {
+                    case op = this.state.profileu:
+                        var t = this.state.profilem;
+                        t.unshift(msg[0].content);
+                        if(t.length >= 3){
+                            t.pop()
+                        }
+                        this.setState({profilem:t});
+                        break;
+                    case op = this.state.profileu2:
+                        var t2 = this.state.profilem2;
+                        t2.unshift(msg[0].content);
+                        if(t2.length >= 3){
+                            t2.pop()
+                        }
+                        this.setState({profilem2:t2});
+                        break;
+                    case op = this.state.profileu3:
+                        var t3 = this.state.profilem3;
+                        t3.unshift(msg[0].content);
+                        if(t3.length >= 3){
+                            t3.pop()
+                        }
+                        this.setState({profilem3:t3});
+                        break;
                 }
-                this.setState({profilem:t});
             }
         }
-    }
+
 
     handleProfileD (data){
-        console.log(data);
-       // if(this.state.toggleProfile === false)
-        //{
+       if(this.state.toggleProfile === false)
+        {
             this.setState({profileu: data.pname});
             this.setState({profilem: data.result.reverse()});
             this.setState({toggleProfile: true});
-        //}else if(this.state.hello === false) {
-        //    this.setState({profileu2: data.pname});
-        //    this.setState({profilem2:data.result.reverse()});
-        //    this.setState({hello: true})
-        //}else if(this.state.test123 === false){
-         //   this.setState({profileu3: data.pname});
-        //    this.setState({profilem3: data.result.reverse()});
-        //    this.setState({toggleProfile: true});
-        //    this.setState({test123:true})
-       // }
+        }else if
+       (this.state.hello === false) {
+           if(data.pname === this.state.profileu){
+               alert('profile already open')
+           }else {
+               this.setState({profileu2: data.pname});
+               this.setState({profilem2: data.result.reverse()});
+               this.setState({hello: true})
+           }
+        }else if(this.state.test123 === false){
+           if(data.pname === this.state.profileu2){
+               alert('profile already open')
+           }else {
+               this.setState({profileu3: data.pname});
+               this.setState({profilem3: data.result.reverse()});
+               this.setState({toggleProfile: true});
+               this.setState({test123: true})
+           }
+        }
     }
-
-  ///  handleData (data) {
-    //    this.setState({messages: [...data].reverse()});
-      //  if(this.state.toggleProfile === true){
-       //     const socket = this.props.s;
-        //    socket.emit('pname', this.state.profileu);
-       // }
-   // }
 
     search = async e =>{
         e.preventDefault();
@@ -113,12 +145,8 @@ class Homepage extends Component {
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
-        console.log(this.state.user);
-        console.log(this.state.content);
         var time = new Date().toLocaleTimeString().toString();
-        console.log(typeof(time));
         socket.emit('message', {user:this.state.user, content:this.state.content, time:time});
-        console.log('sent');
     };
 
 
@@ -129,25 +157,27 @@ class Homepage extends Component {
                 <Navbar/>
                 <Row>
                     <Col xs="6" sm="4">
-                <Form onSubmit={this.search}>
-                    <FormGroup>
+                <Form inline onSubmit={this.search}>
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                         <Input
                             type="text"
                             name="text" id="exampleText"
                             value={this.state.post}
                             onChange={e => this.setState({ searchq: e.target.value })}
+                            width={"50%"}
                         />
+                    </FormGroup>
                         <Button
                             type="submit"
                             color="primary">
                             Search
                         </Button>
-                    </FormGroup>
+
                     </Form>
-                    <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
+                    <Button  className="float-left" color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
                     <br/>
                     <br/>
-                    <Button color="danger" tag={Link} to ="/">Sign out</Button>
+                    <Button className="float-left" color="danger" tag={Link} to ="/">Sign out</Button>
                     </Col>
 
                     <Col xs="6" sm="4">
@@ -161,17 +191,17 @@ class Homepage extends Component {
                     <Col xs="6" sm="4">
                     {
                         this.state.toggleProfile &&
-                        <Profile pname={this.state.profileu} result={this.state.profilem}/>
+                        <Profile action={this.childHandler} pname={this.state.profileu} result={this.state.profilem}/>
                     }
                     <br/>
                     {
                         this.state.hello &&
-                        <Profile pname={this.state.profileu2} result={this.state.profilem2}/>
+                        <Profile action={this.childHandler} pname={this.state.profileu2} result={this.state.profilem2}/>
                     }
                     <br/>
                     {
                         this.state.test123 &&
-                        <Profile pname={this.state.profileu3} result={this.state.profilem3}/>
+                        <Profile action={this.childHandler} pname={this.state.profileu3} result={this.state.profilem3}/>
                     }
                     </Col>
 
