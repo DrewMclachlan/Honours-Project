@@ -26,9 +26,9 @@ class Homepage extends Component {
             test123: false
         };
         this.toggle = this.toggle.bind(this);
-        this.handleData = this.handleData.bind(this);
         this.handleProfileD = this.handleProfileD.bind(this);
         this.test = this.test.bind(this);
+        this.innit = this.innit.bind(this);
     }
 
     toggle(){
@@ -41,10 +41,14 @@ class Homepage extends Component {
         this.setState({user: localStorage.getItem('user')});
         const socket = this.props.s;
         socket.emit('send', 'test');
-        socket.on('getlist', this.handleData);
-        socket.on('test', this.handleData);
+        socket.on('getlist', this.innit);
+        socket.on('test', this.test);
         socket.on('transfer', this.handleProfileD)
         socket.on('newmsg', this.test);
+    }
+
+    innit(msglist){
+        this.setState({messages: [...msglist].reverse()});
     }
 
     test(msg){
