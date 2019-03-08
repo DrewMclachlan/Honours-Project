@@ -26,6 +26,7 @@ class Homepage extends Component {
             test123: false
         };
         this.toggle = this.toggle.bind(this);
+        this.handleData = this.handleData.bind(this);
         this.handleProfileD = this.handleProfileD.bind(this);
         this.test = this.test.bind(this);
     }
