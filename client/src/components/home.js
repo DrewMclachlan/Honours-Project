@@ -174,7 +174,7 @@ class Homepage extends Component {
                         </Button>
 
                     </Form>
-                    <Button  className="float-left" color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
+                    <Button  id={"post"} className="float-left" color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
                     <br/>
                     <br/>
                     <Button className="float-left" color="danger" tag={Link} to ="/">Sign out</Button>
@@ -214,13 +214,15 @@ class Homepage extends Component {
                             <Form onSubmit={this.handleSubmit}>
                             <FormGroup>
                                 <Input
+
                                     type="textarea"
-                                    name="text" id="exampleText"
+                                    name="text" id="hsubmiti"
                                     value={this.state.post}
                                     onChange={e => this.setState({ content: e.target.value })}
                                 />
                             </FormGroup>
                                 <Button
+                                    id={"hsubmit"}
                                     type="submit"
                                     color="primary"
                                     onClick={this.toggle}>
