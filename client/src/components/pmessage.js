@@ -9,7 +9,7 @@ export default class Pmessage extends React.Component {
             <div>
                 <Card style={{margin:10}}>
                     <CardBody>
-                        <CardText style={{backgroundColor: 'black'}} className={"text-left"}>m: {this.props.m}</CardText>
+                        <CardText style={{color: "black"}} className={"text-left"}>{this.props.m}</CardText>
                     </CardBody>
                 </Card>
             </div>

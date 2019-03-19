@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, } from 'reactstrap';
+import { Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, ButtonGroup } from 'reactstrap';
 import {
     Link,
 } from 'react-router-dom'
@@ -15,14 +15,19 @@ class Homepage extends Component {
         this.state = {
             messages: [], test: 'drew', modal: false, user: '', profileu:'',
             profilem:'', profileu2:'', profilem2:'', profileu3:'', profilem3:'',
-            toggleProfile: false, hello: false, test123: false, data: ''
-        };
+            toggleProfile: false, hello: false, test123: false, data: '', tag: '', closetagged:false ,
+            title: "Home"
+
+    };
+        this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
         this.toggle = this.toggle.bind(this);
         this.handleProfileD = this.handleProfileD.bind(this);
         this.test = this.test.bind(this);
         this.innit = this.innit.bind(this);
-        this.childHandler = this.childHandler.bind(this)
+        this.childHandler = this.childHandler.bind(this);
         this.drew = this.drew.bind(this);
+        this.taggedmsgs = this.taggedmsgs.bind(this);
+        this.returnHome = this.returnHome.bind(this);
     }
 
     childHandler(dataFromChild) {
@@ -50,7 +55,8 @@ class Homepage extends Component {
 
     toggle(){
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+          //  tag: ''
         });
     }
 
@@ -62,6 +68,17 @@ class Homepage extends Component {
         socket.on('test', this.test);
         socket.on('transfer', this.handleProfileD)
         socket.on('newmsg', this.test);
+        socket.on('taggedmsg', this.taggedmsgs)
+    }
+
+    taggedmsgs(tm){
+        console.log(tm)
+
+      if(Object.keys(tm).length > 0) {
+            console.log(tm);
+            this.setState({title: tm[0].tag, messages: [...tm].reverse(),
+                closetagged: true})
+        }
     }
 
     innit(msglist){
@@ -69,6 +86,22 @@ class Homepage extends Component {
     }
 
     test(msg){
+        console.log(msg);
+        if(this.state.closetagged === true){
+            console.log('A', msg[0].tag);
+            console.log('B', this.state.searchqt)
+            if(msg[0].tag === this.state.searchqt){
+                console.log('C')
+                var x = this.state.messages;
+                console.log('D', x)
+                x.unshift(msg[0]);
+                this.setState({messages: x});
+                console.log('done');
+                return 0;
+            }else{
+                return 0;
+            }
+        }
         var x = this.state.messages
         x.unshift(msg[0]);
         this.setState({messages: x});
@@ -142,67 +175,156 @@ class Homepage extends Component {
         socket.emit('search', searchvalue);
     };
 
+    searchtag = async e =>{
+        e.preventDefault();
+        var searchvalue = this.state.searchqt;
+        const socket = this.props.s;
+        socket.emit('tag', searchvalue);
+    };
+
+
+
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
         var time = new Date().toLocaleTimeString().toString();
-        socket.emit('message', {user:this.state.user, content:this.state.content, time:time});
+        console.log(this.state.tag);
+        socket.emit('message', {user:this.state.user, content:this.state.content, time:time, tag:this.state.tag});
     };
+
+
+
+    onRadioBtnClick(rSelected) {
+        switch(rSelected){
+            case 1:
+                this.setState({ tag: 'News'});
+                break;
+            case 2:
+                this.setState({ tag: 'Sport'});
+                break;
+            case 3:
+                this.setState({ tag: 'Tv'});
+                break;
+        }
+
+    }
+
+  returnHome(){
+        console.log('hello')
+        this.setState({ closetagged:false})
+        const socket = this.props.s;
+      socket.emit('send', 'test');
+
+  }
 
 
 
     render() {
         return (
-            <div className="App">
+            <div className="App" >
                 <Navbar/>
-                <Row>
-                    <Col xs="6" sm="4">
-                <Form inline onSubmit={this.search}>
-                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                        <Input
-                            type="text"
-                            name="text" id="exampleText"
-                            value={this.state.post}
-                            onChange={e => this.setState({ searchq: e.target.value })}
-                            width={"50%"}
-                        />
-                    </FormGroup>
-                        <Button
-                            type="submit"
-                            color="primary">
-                            Search
-                        </Button>
 
-                    </Form>
-                    <Button  id={"post"} className="float-left" color="danger" onClick={this.toggle}>{this.props.buttonLabel}Write a Post</Button>
-                    <br/>
-                    <br/>
-                    <Button className="float-left" color="danger" tag={Link} to ="/">Sign out</Button>
+                <Row>
+                    <Col xs="6" sm="4"  >
+                        <div style={{border:"2px solid black", backgroundColor: "lightblue", marginLeft:29}}>
+                            <h3>Welcome to ---- </h3>
+                            <p>The body text or body copy is the text forming the main content of a book, magazine, web page, or any other printed or digital work.</p>
+                        <Button size={"lg"} block id={"post"}  color="success" onClick={this.toggle}>
+                         Write a Post</Button>
+                            <Button size={"lg"} block   color="danger" tag={Link} to ="/">Sign out</Button>
+
+
+                        <br/>
+                        <Form style={{display:"flex"}} onSubmit={this.searchtag}>
+
+                                <Input type="text" name="text" id="exampleText" value={this.state.post}
+                                       onChange={e => this.setState({ searchqt: e.target.value })}
+                                       width={"50%"} placeholder={"filter messages by tag"}/>
+
+                            <Button type="submit" color="primary">
+                                Search
+                            </Button>
+                        </Form>
+                            <br/>
+
+                            <br/>
+                            {
+                                this.state.closetagged &&
+                                <Button size={"lg"} block onClick={this.returnHome} outline color="warning">Return Home</Button>
+                            }
+                        </div>
                     </Col>
 
-                    <Col xs="6" sm="4">
+
+
+
+
+
+
+
+
+                    <Col xs="6" sm="4" >
+                        <div style={{border:"2px solid black", backgroundColor: "lightblue"}}><h3 style={{marginLeft:10}} className={"text-left"}>{this.state.title} feed</h3></div>
+                        <div style={{border:"2px solid black", backgroundColor: "lightgrey"}}>
+
                         {
                             this.state.messages.map(user =>
-                                <Message key={user._id} u={user.op} m={user.content} t={user.time} s={this.props.s}/>
+                                <Message key={user._id} u={user.op} m={user.content} t={user.time} tag={user.tag} s={this.props.s}/>
                             )
                         }
+                    </div>
                     </Col>
 
-                    <Col xs="6" sm="4">
+
+
+
+
+
+
+
+
+
+
+                    <Col xs="6" sm="4" >
+                        <div style={{border:"2px solid black", backgroundColor: "lightblue"}}><h3 style={{marginLeft:10}} className={"text-left"}>User profiles</h3></div>
+
+                        <Form  style={{display: "flex"}} onSubmit={this.search}>
+
+                                <Input type="text" name="text"
+                                       id="exampleText" value={this.state.post}
+                                       onChange={e => this.setState({ searchq: e.target.value })}
+                                       placeholder="search for a user"
+                                       />
+
+                            <Button  type="submit" color="primary">Search</Button>
+
+
+                        </Form>
+
+                        <br/>
+                        <br/>
+
+
+                        <div style={{marginRight:20}}>
                     {
                         this.state.toggleProfile &&
-                        <Profile action={this.childHandler} pname={this.state.profileu} result={this.state.profilem}/>
+                        <Profile action={this.childHandler} pname={this.state.profileu} result={this.state.profilem} />
                     }
+                        </div>
                     <br/>
+                        <div style={{marginRight:20}}>
                     {
                         this.state.hello &&
                         <Profile action={this.childHandler} pname={this.state.profileu2} result={this.state.profilem2}/>
                     }
+                        </div>
                     <br/>
+                        <div style={{marginRight:20}}>
                     {
                         this.state.test123 &&
                         <Profile action={this.childHandler} pname={this.state.profileu3} result={this.state.profilem3}/>
                     }
+                        </div>
                     </Col>
 
 
@@ -221,14 +343,18 @@ class Homepage extends Component {
                                     onChange={e => this.setState({ content: e.target.value })}
                                 />
                             </FormGroup>
-                                <Button
-                                    id={"hsubmit"}
-                                    type="submit"
-                                    color="primary"
-                                    onClick={this.toggle}>
-                                    Post
-                                </Button>{' '}
-                                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                                <ButtonGroup>
+                                    <Button color="info" onClick={() => this.onRadioBtnClick(1)} active={this.state.rSelected === 1}>News</Button>
+                                    <Button color="info" onClick={() => this.onRadioBtnClick(2)} active={this.state.rSelected === 2}>Sports</Button>
+                                    <Button color="info" onClick={() => this.onRadioBtnClick(3)} active={this.state.rSelected === 3}>Tv</Button>
+                                </ButtonGroup>
+                                <ButtonGroup className={"float-right"}>
+                                    <Button id={"hsubmit"} type="submit" color="primary" onClick={this.toggle}>Post</Button>{' '}
+                                    <Button color="danger" onClick={this.toggle}>Cancel</Button>
+                                </ButtonGroup>
+                                <span> | {this.state.tag}</span>
+
+
                             </Form>
                         </ModalBody>
                     </Modal>

@@ -67,7 +67,7 @@ io.on('connection', function(socket) {
 
 
     socket.on('message', function(msg) {
-        handlers.message(msg.user, msg.content, msg.time);
+        handlers.message(msg.user, msg.content, msg.time, msg.tag);
         setTimeout(function () {
             Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
                 console.log(port);
@@ -92,6 +92,17 @@ io.on('connection', function(socket) {
                 profile(searchname)
             })
     })
+
+    socket.on('tag', function(data){
+        handlers.searchtag(data)
+            .then(function(taggedmsg){
+                console.log(taggedmsg);
+                socket.emit('taggedmsg', taggedmsg)
+                 //add validation
+               // profile(searchname)
+            })
+    })
+
 
     function profile (pname){
         handlers.findPM(pname)

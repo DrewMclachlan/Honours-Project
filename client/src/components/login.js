@@ -54,10 +54,13 @@ export default class Login extends React.Component {
         return (
             <div>
             <Navbar/>
+
                 <Form style={{margin:100}} onSubmit={this.handleSubmit}>
-                    <Row form>
-                        <Col md={8}>
-                            <FormGroup>
+                    <Row md={{offest: 3}}>
+                        <Col sm="8" md={{ size: 4, offset: 4 }} className={"border"}>
+                            <h3 style={{marginTop:30}}>Login</h3>
+                            <br/>
+                            <FormGroup >
                                 <Label for="username">Username</Label>
                                 <Input
                                     type="text"
@@ -65,24 +68,23 @@ export default class Login extends React.Component {
                                     id="username"
                                     value={this.state.post}
                                     onChange={e => this.setState({ username: e.target.value })}
-                                    placeholder="with a placeholder" />
+                                    placeholder="username" />
                             </FormGroup>
-                        </Col>
-                        <Col md={8}>
-                            <FormGroup>
+
+
+                            <FormGroup style={{marginBottom:40}}>
                                 <Label for="password">Password</Label>
-                                <Input type="password"
-                                       name="password"
-                                       id="password"
-                                       value={this.state.post}
+                                <Input type="password" name="password" id="password" value={this.state.post}
                                        onChange={e => this.setState({ password: e.target.value })}
-                                       placeholder="password placeholder" />
+                                       placeholder="password" />
+                                <br/>
+                                <Button outline color={"primary"}>Sign in</Button>
+                                <Button outline tag={Link} to ="/signup">Sign up</Button>
                             </FormGroup>
+
+
                         </Col>
                     </Row>
-                    <Button>Sign in</Button>
-
-                        <Link to="/signup">Sign Up</Link>
 
 
 

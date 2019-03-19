@@ -18,9 +18,14 @@ export default class Message extends React.Component {
             <Card style={{margin:10}}>
                 <CardHeader className={"text-left"} onClick={() => this.handleClick(this.props.u)} >{this.props.u}</CardHeader>
                 <CardBody>
-                <CardText className={"text-left"}>m: {this.props.m}</CardText>
+                <CardText className={"text-left"}>{this.props.m}</CardText>
                 </CardBody>
-                <CardFooter className={"text-right"}>time: {this.props.t} </CardFooter>
+                <CardFooter>
+
+                    <div className={"float-left"}>{this.props.tag}</div>
+                    <div className={"float-right"} >{this.props.t}</div>
+
+                </CardFooter>
             </Card>
             </div>
         )

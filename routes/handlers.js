@@ -41,21 +41,22 @@ function checkUserDB(username, password){
 
 //Home page functions
 //Add message
-function addDb (op, content, time){
+function addDb (op, content, time, tag){
    // var mongoose = require('mongoose');
    // var id = mongoose.Types.ObjectId();
     const newMessage = new Message({
        // _id: id,
         op: op,
         content: content,
-        time:time
+        time:time,
+        tag:tag
     });
     newMessage.save()
 
 };
 
-function message(user, content, time){
-    addDb(user, content, time)
+function message(user, content, time, tag){
+    addDb(user, content, time, tag)
 }
 
 
@@ -105,6 +106,22 @@ return new Promise(function(resolve, reject){
 })
 }
 
+function searchtag(searchqt){
+    return new Promise(function(resolve, reject){
+        Message.find({
+            tag: searchqt
+        })
+        //make this cleaner
+            .then(doc =>{
+                var x = JSON.parse(JSON.stringify(doc))
+                    resolve(x)
+            })
+            .catch(err =>{
+                reject(err);
+            })
+    })
+}
+
 
 
 module.exports = {
@@ -112,5 +129,6 @@ module.exports = {
     check: checkUserDB,
     add: addUser,
     findPM: findProfileMessages,
-    search: search
+    search: search,
+    searchtag: searchtag
 };

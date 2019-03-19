@@ -17,6 +17,9 @@ var messageSchema = new schema({
     },
     time:{
         type: String,
+    },
+    tag:{
+        type: String,
     }
 
 });
