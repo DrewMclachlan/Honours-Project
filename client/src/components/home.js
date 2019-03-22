@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, ButtonGroup } from 'reactstrap';
-import {
-    Link,
-} from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap';
 import Navbar from './navbar.js'
 import Message from './message.js'
@@ -17,7 +14,6 @@ class Homepage extends Component {
             profilem:'', profileu2:'', profilem2:'', profileu3:'', profilem3:'',
             toggleProfile: false, hello: false, test123: false, data: '', tag: '', closetagged:false ,
             title: "Home"
-
     };
         this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -35,6 +31,8 @@ class Homepage extends Component {
             data: dataFromChild
         },() => this.drew())
         }
+
+
 
         drew() {
             if(this.state.data)
@@ -80,7 +78,6 @@ class Homepage extends Component {
                 closetagged: true})
         }
     }
-
     innit(msglist){
         this.setState({messages: [...msglist].reverse()});
     }
@@ -89,11 +86,11 @@ class Homepage extends Component {
         console.log(msg);
         if(this.state.closetagged === true){
             console.log('A', msg[0].tag);
-            console.log('B', this.state.searchqt)
+            console.log('B', this.state.searchqt);
             if(msg[0].tag === this.state.searchqt){
-                console.log('C')
+                console.log('C');
                 var x = this.state.messages;
-                console.log('D', x)
+                console.log('D', x);
                 x.unshift(msg[0]);
                 this.setState({messages: x});
                 console.log('done');
@@ -182,8 +179,6 @@ class Homepage extends Component {
         socket.emit('tag', searchvalue);
     };
 
-
-
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
@@ -221,17 +216,18 @@ class Homepage extends Component {
 
     render() {
         return (
-            <div className="App" >
+            <div className="App"  >
                 <Navbar/>
-
+            <br/>
                 <Row>
                     <Col xs="6" sm="4"  >
                         <div style={{border:"2px solid black", backgroundColor: "lightblue", marginLeft:29}}>
-                            <h3>Welcome to ---- </h3>
-                            <p>The body text or body copy is the text forming the main content of a book, magazine, web page, or any other printed or digital work.</p>
+                            <h3>Welcome to </h3>
+                            <p>To get started write a post by clicking the button below. If you'd like to follow the
+                            posts of a certian users, search for them</p>
                         <Button size={"lg"} block id={"post"}  color="success" onClick={this.toggle}>
                          Write a Post</Button>
-                            <Button size={"lg"} block   color="danger" tag={Link} to ="/">Sign out</Button>
+
 
 
                         <br/>
@@ -276,19 +272,10 @@ class Homepage extends Component {
                     </Col>
 
 
-
-
-
-
-
-
-
-
-
                     <Col xs="6" sm="4" >
-                        <div style={{border:"2px solid black", backgroundColor: "lightblue"}}><h3 style={{marginLeft:10}} className={"text-left"}>User profiles</h3></div>
+                        <div style={{border:"2px solid black", backgroundColor: "lightblue", marginRight:29 }}><h3 style={{marginLeft:10}} className={"text-left"}>User profiles</h3></div>
 
-                        <Form  style={{display: "flex"}} onSubmit={this.search}>
+                        <Form  style={{display: "flex", marginRight:29 }} onSubmit={this.search}>
 
                                 <Input type="text" name="text"
                                        id="exampleText" value={this.state.post}

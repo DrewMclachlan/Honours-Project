@@ -20,11 +20,9 @@ export default class Message extends React.Component {
                 <CardBody>
                 <CardText className={"text-left"}>{this.props.m}</CardText>
                 </CardBody>
-                <CardFooter>
-
+                <CardFooter className={"text-muted"}>
                     <div className={"float-left"}>{this.props.tag}</div>
                     <div className={"float-right"} >{this.props.t}</div>
-
                 </CardFooter>
             </Card>
             </div>

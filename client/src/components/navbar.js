@@ -10,7 +10,9 @@ import {
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem } from 'reactstrap';
+    DropdownItem, Button
+} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 export default class Example extends React.Component {
 
@@ -18,10 +20,13 @@ export default class Example extends React.Component {
         return (
             <div>
                 <Navbar color="dark" light expand="md">
-                    <NavbarBrand href="/">Real Time Web App</NavbarBrand>
+                    <NavbarBrand style={{color:"lightblue"}} href="/">Real Time Web App</NavbarBrand>
 
-
-
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <NavLink> <Button  color="danger" tag={Link} to ="/">Sign out</Button></NavLink>
+                        </NavItem>
+                    </Nav>
 
                 </Navbar>
             </div>
