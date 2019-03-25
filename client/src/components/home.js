@@ -222,7 +222,7 @@ class Homepage extends Component {
                 <Row>
                     <Col xs="6" sm="4"  >
                         <div style={{border:"2px solid black", backgroundColor: "lightblue", marginLeft:29}}>
-                            <h3>Welcome to </h3>
+                            <h3>Welcome to RTSM </h3>
                             <p>To get started write a post by clicking the button below. If you'd like to follow the
                             posts of a certian users, search for them</p>
                         <Button size={"lg"} block id={"post"}  color="success" onClick={this.toggle}>
@@ -292,21 +292,21 @@ class Homepage extends Component {
                         <br/>
 
 
-                        <div style={{marginRight:20}}>
+                        <div style={{marginRight:27}}>
                     {
                         this.state.toggleProfile &&
                         <Profile action={this.childHandler} pname={this.state.profileu} result={this.state.profilem} />
                     }
                         </div>
                     <br/>
-                        <div style={{marginRight:20}}>
+                        <div style={{marginRight:27}}>
                     {
                         this.state.hello &&
                         <Profile action={this.childHandler} pname={this.state.profileu2} result={this.state.profilem2}/>
                     }
                         </div>
                     <br/>
-                        <div style={{marginRight:20}}>
+                        <div style={{marginRight:27}}>
                     {
                         this.state.test123 &&
                         <Profile action={this.childHandler} pname={this.state.profileu3} result={this.state.profilem3}/>
