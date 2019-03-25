@@ -233,7 +233,7 @@ class Homepage extends Component {
                         <br/>
                         <Form style={{display:"flex"}} onSubmit={this.searchtag}>
 
-                                <Input type="text" name="text" id="exampleText" value={this.state.post}
+                                <Input type="text" name="text" id="searchtag" value={this.state.post}
                                        onChange={e => this.setState({ searchqt: e.target.value })}
                                        width={"50%"} placeholder={"filter messages by tag"}/>
 
@@ -278,7 +278,7 @@ class Homepage extends Component {
                         <Form  style={{display: "flex", marginRight:29 }} onSubmit={this.search}>
 
                                 <Input type="text" name="text"
-                                       id="exampleText" value={this.state.post}
+                                       id="usersearch" value={this.state.post}
                                        onChange={e => this.setState({ searchq: e.target.value })}
                                        placeholder="search for a user"
                                        />
@@ -331,9 +331,9 @@ class Homepage extends Component {
                                 />
                             </FormGroup>
                                 <ButtonGroup>
-                                    <Button color="info" onClick={() => this.onRadioBtnClick(1)} active={this.state.rSelected === 1}>News</Button>
-                                    <Button color="info" onClick={() => this.onRadioBtnClick(2)} active={this.state.rSelected === 2}>Sports</Button>
-                                    <Button color="info" onClick={() => this.onRadioBtnClick(3)} active={this.state.rSelected === 3}>Tv</Button>
+                                    <Button id={"news"} color="info" onClick={() => this.onRadioBtnClick(1)} active={this.state.rSelected === 1}>News</Button>
+                                    <Button id={"sport"} color="info" onClick={() => this.onRadioBtnClick(2)} active={this.state.rSelected === 2}>Sports</Button>
+                                    <Button id={"tv"} color="info" onClick={() => this.onRadioBtnClick(3)} active={this.state.rSelected === 3}>Tv</Button>
                                 </ButtonGroup>
                                 <ButtonGroup className={"float-right"}>
                                     <Button id={"hsubmit"} type="submit" color="primary" onClick={this.toggle}>Post</Button>{' '}
