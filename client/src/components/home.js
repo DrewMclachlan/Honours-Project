@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Input, Form, FormGroup, Button, Modal, ModalHeader, ModalBody, ButtonGroup } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import Navbar from './navbar.js'
 import Message from './message.js'
 import Profile from './profile.js'
@@ -70,8 +70,6 @@ class Homepage extends Component {
     }
 
     taggedmsgs(tm){
-        console.log(tm)
-
       if(Object.keys(tm).length > 0) {
             console.log(tm);
             this.setState({title: tm[0].tag, messages: [...tm].reverse(),
@@ -83,17 +81,11 @@ class Homepage extends Component {
     }
 
     test(msg){
-        console.log(msg);
         if(this.state.closetagged === true){
-            console.log('A', msg[0].tag);
-            console.log('B', this.state.searchqt);
             if(msg[0].tag === this.state.searchqt){
-                console.log('C');
                 var x = this.state.messages;
-                console.log('D', x);
                 x.unshift(msg[0]);
                 this.setState({messages: x});
-                console.log('done');
                 return 0;
             }else{
                 return 0;
@@ -104,15 +96,13 @@ class Homepage extends Component {
         this.setState({messages: x});
         this.forceUpdate();
         if(this.state.toggleProfile || this.state.hello || this.state.test123 === true){
-            console.log('here');
-            var op = msg[0].op
-            console.log(op);
+            var op = msg[0].op;
             //if(msg[0].op === this.state.profileu || this.state.profileu2 || this.state.profileu3){
                 switch(op) {
                     case op = this.state.profileu:
                         var t = this.state.profilem;
                         t.unshift(msg[0].content);
-                        if(t.length >= 3){
+                        if(t.length > 3){
                             t.pop()
                         }
                         this.setState({profilem:t});
@@ -120,7 +110,7 @@ class Homepage extends Component {
                     case op = this.state.profileu2:
                         var t2 = this.state.profilem2;
                         t2.unshift(msg[0].content);
-                        if(t2.length >= 3){
+                        if(t2.length > 3){
                             t2.pop()
                         }
                         this.setState({profilem2:t2});
@@ -128,7 +118,7 @@ class Homepage extends Component {
                     case op = this.state.profileu3:
                         var t3 = this.state.profilem3;
                         t3.unshift(msg[0].content);
-                        if(t3.length >= 3){
+                        if(t3.length > 3){
                             t3.pop()
                         }
                         this.setState({profilem3:t3});
@@ -139,6 +129,7 @@ class Homepage extends Component {
 
 
     handleProfileD (data){
+        console.log(new Date().getTime());
        if(this.state.toggleProfile === false)
         {
             this.setState({profileu: data.pname});
@@ -205,7 +196,6 @@ class Homepage extends Component {
     }
 
   returnHome(){
-        console.log('hello')
         this.setState({ closetagged:false})
         const socket = this.props.s;
       socket.emit('send', 'test');
@@ -250,13 +240,6 @@ class Homepage extends Component {
                             }
                         </div>
                     </Col>
-
-
-
-
-
-
-
 
 
                     <Col xs="6" sm="4" >

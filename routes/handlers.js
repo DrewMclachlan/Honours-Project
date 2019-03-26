@@ -77,7 +77,6 @@ function findProfileMessages(profileName){
                 y.forEach(function (element) {
                   //  console.log(element.content);
                     content.push(element.content);
-                   // console.log(content)
                 });
                 resolve(content)
             });
