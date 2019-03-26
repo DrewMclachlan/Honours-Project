@@ -12,7 +12,7 @@ class Homepage extends Component {
         this.state = {
             messages: [], test: 'drew', modal: false, user: '', profileu:'',
             profilem:'', profileu2:'', profilem2:'', profileu3:'', profilem3:'',
-            toggleProfile: false, hello: false, test123: false, data: '', tag: '', closetagged:false ,
+            toggleProfile: false, hello: false, test123: false, data: '', tag: '', closetagged:false, buffer:null,
             title: "Home"
     };
         this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -24,6 +24,7 @@ class Homepage extends Component {
         this.drew = this.drew.bind(this);
         this.taggedmsgs = this.taggedmsgs.bind(this);
         this.returnHome = this.returnHome.bind(this);
+        this.profilecheck = this.profilecheck.bind(this);
     }
 
     childHandler(dataFromChild) {
@@ -80,14 +81,16 @@ class Homepage extends Component {
         this.setState({messages: [...msglist].reverse()});
     }
 
-    test(msg){
-        if(this.state.closetagged === true){
-            if(msg[0].tag === this.state.searchqt){
+    test(msg) {
+        if (this.state.closetagged === true) {
+            if (msg[0].tag === this.state.searchqt) {
                 var x = this.state.messages;
                 x.unshift(msg[0]);
                 this.setState({messages: x});
+                this.profilecheck(msg);
                 return 0;
-            }else{
+            } else {
+                this.profilecheck(msg);
                 return 0;
             }
         }
@@ -95,13 +98,18 @@ class Homepage extends Component {
         x.unshift(msg[0]);
         this.setState({messages: x});
         this.forceUpdate();
+        this.profilecheck(msg);
+    }
+    profilecheck(msg){
         if(this.state.toggleProfile || this.state.hello || this.state.test123 === true){
             var op = msg[0].op;
             //if(msg[0].op === this.state.profileu || this.state.profileu2 || this.state.profileu3){
                 switch(op) {
                     case op = this.state.profileu:
                         var t = this.state.profilem;
+                        console.log('before', t);
                         t.unshift(msg[0].content);
+                        console.log('after', t);
                         if(t.length > 3){
                             t.pop()
                         }
