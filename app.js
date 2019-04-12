@@ -28,6 +28,7 @@ app.use(session({
 }));
 
 //DB
+//CHANGE from test before screenshot
 db.connect('mongodb://localhost:27017/test')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));

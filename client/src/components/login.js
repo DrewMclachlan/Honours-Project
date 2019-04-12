@@ -37,8 +37,10 @@ export default class Login extends React.Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        const socket = this.props.s;
        var uname = this.state.username;
+
+       //Ignore
+        const socket = this.props.s;
        localStorage.setItem('user', uname);
         socket.emit('userL', {username: this.state.username, password: this.state.password})
         socket.on('auth', this.handleData)

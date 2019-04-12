@@ -14,7 +14,8 @@ function addUser(username, email, password){
     newUser.save()
 }
 
-//User Login functions§
+
+//User Login functions
 function checkUserDB(username, password){
     return new Promise(function(resolve, reject) {
         console.log(username);
@@ -37,13 +38,9 @@ function checkUserDB(username, password){
     })
 }
 
-
-
 //Home page functions
 //Add message
 function addDb (op, content, time, tag){
-   // var mongoose = require('mongoose');
-   // var id = mongoose.Types.ObjectId();
     const newMessage = new Message({
        // _id: id,
         op: op,
@@ -52,7 +49,6 @@ function addDb (op, content, time, tag){
         tag:tag
     });
     newMessage.save()
-
 };
 
 function message(user, content, time, tag){
@@ -120,9 +116,6 @@ function searchtag(searchqt){
             })
     })
 }
-
-
-
 module.exports = {
     message: message,
     check: checkUserDB,

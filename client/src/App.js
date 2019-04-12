@@ -13,7 +13,9 @@ class App extends Component {
 
 
     render() {
-        const socket  = socketIOClient('localhost:4000')
+
+        const socket  = socketIOClient('localhost:4000');
+
         return (
 
             <BrowserRouter>

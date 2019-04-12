@@ -55,7 +55,7 @@ class Homepage extends Component {
     toggle(){
         this.setState({
             modal: !this.state.modal,
-          //  tag: ''
+
         });
     }
 
@@ -84,7 +84,7 @@ class Homepage extends Component {
     test(msg) {
         if (this.state.closetagged === true) {
             if (msg[0].tag === this.state.searchqt) {
-                var x = this.state.messages;
+                var  x = this.state.messages;
                 x.unshift(msg[0]);
                 this.setState({messages: x});
                 this.profilecheck(msg);
