@@ -6,6 +6,7 @@ import Navbar from './navbar.js'
 import Message from './message.js'
 import Profile from './profile.js'
 import '../App.css';
+import {getTarget} from "reactstrap/es/utils";
 class Homepage extends Component {
     constructor() {
         super();
@@ -25,6 +26,7 @@ class Homepage extends Component {
         this.taggedmsgs = this.taggedmsgs.bind(this);
         this.returnHome = this.returnHome.bind(this);
         this.profilecheck = this.profilecheck.bind(this);
+        this.getTagged = this.getTagged.bind(this);
     }
 
     childHandler(dataFromChild) {
@@ -67,7 +69,17 @@ class Homepage extends Component {
         socket.on('test', this.test);
         socket.on('transfer', this.handleProfileD)
         socket.on('newmsg', this.test);
-        socket.on('taggedmsg', this.taggedmsgs)
+       // socket.on('taggedmsg', this.taggedmsgs)
+    }
+
+    getTagged(tag){
+        var temp = [];
+       this.state.messages.forEach(function(m){
+           if(m.tag === tag){
+               temp.unshift(m);
+           }
+       })
+        this.taggedmsgs(temp);
     }
 
     taggedmsgs(tm){
@@ -81,7 +93,7 @@ class Homepage extends Component {
         this.setState({messages: [...msglist].reverse()});
     }
 
-    test(msg) {
+        test(msg) {
         if (this.state.closetagged === true) {
             if (msg[0].tag === this.state.searchqt) {
                 var  x = this.state.messages;
@@ -100,6 +112,8 @@ class Homepage extends Component {
         this.forceUpdate();
         this.profilecheck(msg);
     }
+
+    //Profile check
     profilecheck(msg){
         if(this.state.toggleProfile || this.state.hello || this.state.test123 === true){
             var op = msg[0].op;
@@ -135,9 +149,8 @@ class Homepage extends Component {
             }
         }
 
-
+        //Opens Profiles in the correct order.
     handleProfileD (data){
-        console.log(new Date().getTime());
        if(this.state.toggleProfile === false)
         {
             this.setState({profileu: data.pname});
@@ -174,8 +187,9 @@ class Homepage extends Component {
     searchtag = async e =>{
         e.preventDefault();
         var searchvalue = this.state.searchqt;
-        const socket = this.props.s;
-        socket.emit('tag', searchvalue);
+       // const socket = this.props.s;
+       // socket.emit('tag', searchvalue);
+        this.getTagged(searchvalue);
     };
 
     handleSubmit = async e => {
