@@ -49,6 +49,10 @@ function addDb (op, content, time, tag){
         tag:tag
     });
     newMessage.save()
+    var rightnow = new Date();
+    var time = rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds();
+
+    console.log("Added To Database: ", time);
 };
 
 function message(user, content, time, tag){

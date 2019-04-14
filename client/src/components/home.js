@@ -10,6 +10,7 @@ import {getTarget} from "reactstrap/es/utils";
 class Homepage extends Component {
     constructor() {
         super();
+        //Initialise state variables
         this.state = {
             messages: [], test: 'drew', modal: false, user: '', profileu:'',
             profilem:'', profileu2:'', profilem2:'', profileu3:'', profilem3:'',
@@ -41,14 +42,14 @@ class Homepage extends Component {
             if(this.state.data)
             switch (this.state.data) {
                 case this.state.data = this.state.profileu:
-                    this.setState({toggleProfile:false})
-                    console.log(this.state.toggleProfile)
+                    this.setState({toggleProfile:false});
+                    console.log(this.state.toggleProfile);
                     break;
                 case this.state.data = this.state.profileu2:
-                    this.setState({hello: false})
+                    this.setState({hello: false});
                     break;
                 case this.state.data = this.state.profileu3:
-                    this.setState({test123: false})
+                    this.setState({test123: false});
                     break;
             }
 
@@ -69,7 +70,6 @@ class Homepage extends Component {
         socket.on('test', this.test);
         socket.on('transfer', this.handleProfileD)
         socket.on('newmsg', this.test);
-       // socket.on('taggedmsg', this.taggedmsgs)
     }
 
     getTagged(tag){
@@ -187,16 +187,14 @@ class Homepage extends Component {
     searchtag = async e =>{
         e.preventDefault();
         var searchvalue = this.state.searchqt;
-       // const socket = this.props.s;
-       // socket.emit('tag', searchvalue);
         this.getTagged(searchvalue);
     };
 
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
-        var time = new Date().toLocaleTimeString().toString();
-        console.log(this.state.tag);
+        var rightnow = new Date()
+        var time = rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds();
         socket.emit('message', {user:this.state.user, content:this.state.content, time:time, tag:this.state.tag});
     };
 
