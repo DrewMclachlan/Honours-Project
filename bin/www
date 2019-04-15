@@ -68,8 +68,9 @@ io.on('connection', function(socket) {
 
 
     socket.on('message', function(msg) {
-        var rightnow = new Date()
-        console.log("Message received at server:" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds());
+        var rightnow = new Date();
+        var timerecived = rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds();
+        console.log("Message received at server:" + timerecived);
         handlers.message(msg.user, msg.content, msg.time, msg.tag);
         setTimeout(function () {
             Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
