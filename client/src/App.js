@@ -14,8 +14,8 @@ class App extends Component {
 
     render() {
 
-        const socket  = socketIOClient('localhost:4000',{
-            transports: ['polling']
+        const socket  = socketIOClient('http://178.62.41.154',{
+            transport:["polling"]
         });
 
         return (

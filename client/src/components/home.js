@@ -94,6 +94,8 @@ class Homepage extends Component {
     }
 
         test(msg) {
+        var d = new Date();
+        console.log("Time recited: " + d.getHours() + ":" + d.getMinutes() + ":"+ d.getSeconds()+ "."+ d.getMilliseconds());
         if (this.state.closetagged === true) {
             if (msg[0].tag === this.state.searchqt) {
                 var  x = this.state.messages;
