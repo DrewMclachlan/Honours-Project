@@ -96,7 +96,12 @@ class Homepage extends Component {
     test(msg) {
         if (this.state.closetagged === true) {
             if (msg.tag === this.state.searchqt) {
-                this.setState({messages: [msg].concat(this.state.messages)});
+                this.setState(function (currentState){
+                    return {
+                        messages: [msg].concat(currentState.messages)
+                    }
+                });
+
                 this.profilecheck(msg);
                 return 0;
             } else {
@@ -104,7 +109,11 @@ class Homepage extends Component {
                 return 0;
             }
         }
-        this.setState({messages: [msg].concat(this.state.messages)});
+        this.setState(function (currentState){
+            return {
+                messages: [msg].concat(currentState.messages)
+            }
+        });
         this.profilecheck(msg);
     }
 
