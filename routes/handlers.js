@@ -1,10 +1,11 @@
 
 
 var Message = require('../schema/message');
+
+
+
 var User = require('../schema/user');
 
-
-//User Sign Up
 function addUser(username, email, password){
     const newUser = new User({
         username: username,
@@ -13,6 +14,7 @@ function addUser(username, email, password){
     });
     newUser.save()
 }
+
 
 
 //User Login functions
@@ -40,9 +42,9 @@ function checkUserDB(username, password){
 
 //Home page functions
 //Add message
-function addDb (op, content, time, tag){
+function addMessage (mid, op, content, time, tag){
     const newMessage = new Message({
-       // _id: id,
+        mid: mid,
         op: op,
         content: content,
         time:time,
@@ -52,9 +54,6 @@ function addDb (op, content, time, tag){
 
 };
 
-function message(user, content, time, tag){
-    addDb(user, content, time, tag)
-}
 
 
 //find Profile Name
@@ -118,7 +117,7 @@ function searchtag(searchqt){
     })
 }
 module.exports = {
-    message: message,
+    message: addMessage,
     check: checkUserDB,
     add: addUser,
     findPM: findProfileMessages,

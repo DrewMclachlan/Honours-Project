@@ -16,5 +16,6 @@ var userSchema = new schema({
         required:true,
     }
 });
+module.exports = db.model('user', userSchema, 'user');
 
-module.exports = db.model('test', userSchema, 'test');
+

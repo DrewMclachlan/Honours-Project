@@ -19,7 +19,7 @@ export default class Login extends React.Component {
     handleSubmit = async e => {
         e.preventDefault();
         const socket = this.props.s;
-        socket.emit('userS', {username: this.state.username, email: this.state.email, password: this.state.password})
+        socket.emit('newuser', {username: this.state.username, email: this.state.email, password: this.state.password})
         this.setState({redirect: true})
     };
 

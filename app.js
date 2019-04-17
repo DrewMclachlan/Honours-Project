@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var db = require('mongoose');
+
+
 var session = require('express-session');
 
 
@@ -27,9 +28,8 @@ app.use(session({
     resave: false
 }));
 
-//DB
-//CHANGE from test before screenshot
-db.connect('mongodb://localhost:27017/test')
+const db = require('mongoose');
+db.connect('mongodb://localhost:27017/hpDatabase')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 

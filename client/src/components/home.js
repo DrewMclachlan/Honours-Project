@@ -93,14 +93,10 @@ class Homepage extends Component {
         this.setState({messages: [...msglist].reverse()});
     }
 
-        test(msg) {
-        var d = new Date();
-        console.log("Time recited: " + d.getHours() + ":" + d.getMinutes() + ":"+ d.getSeconds()+ "."+ d.getMilliseconds());
+    test(msg) {
         if (this.state.closetagged === true) {
-            if (msg[0].tag === this.state.searchqt) {
-                var  x = this.state.messages;
-                x.unshift(msg[0]);
-                this.setState({messages: x});
+            if (msg.tag === this.state.searchqt) {
+                this.setState({messages: [msg].concat(this.state.messages)});
                 this.profilecheck(msg);
                 return 0;
             } else {
@@ -108,10 +104,7 @@ class Homepage extends Component {
                 return 0;
             }
         }
-        var x = this.state.messages
-        x.unshift(msg[0]);
-        this.setState({messages: x});
-        this.forceUpdate();
+        this.setState({messages: [msg].concat(this.state.messages)});
         this.profilecheck(msg);
     }
 
@@ -197,7 +190,7 @@ class Homepage extends Component {
         const socket = this.props.s;
         var rightnow = new Date()
         var time = rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds();
-        socket.emit('message', {user:this.state.user, content:this.state.content, time:time, tag:this.state.tag});
+        socket.emit('newmessage', {op:this.state.user, content:this.state.content, time:time, tag:this.state.tag});
     };
 
 
@@ -270,7 +263,7 @@ class Homepage extends Component {
 
                         {
                             this.state.messages.map(user =>
-                                <Message key={user._id} u={user.op} m={user.content} t={user.time} tag={user.tag} s={this.props.s}/>
+                                <Message key={user.mid} u={user.op} m={user.content} t={user.time} tag={user.tag} s={this.props.s}/>
                             )
                         }
                     </div>

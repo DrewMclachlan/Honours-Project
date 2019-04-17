@@ -4,9 +4,9 @@ var db = require('mongoose');
 var schema = db.Schema;
 
 var messageSchema = new schema({
-   // _id:{
-    //    type:ObjectId
-   // },
+   mid:{
+        type:String,
+    },
     op:{
         type:String,
         required:true

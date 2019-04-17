@@ -10,12 +10,12 @@ var debug = require('debug')('honours-project:server');
 var http = require('http');
 var handlers = require('../routes/handlers');
 var Message = require('../schema/message');
-
+var uuid = require('uuid');
 /**
  * Get port from environment and store in Express.
  */
 //Change back to 80 for deployment
-var port = normalizePort(process.env.PORT || '00');
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 
@@ -23,27 +23,27 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+
+var server = http.createServer(app);
+
+var io = require('socket.io').listen(server);
 app.io = io;
-
-
-
-
 io.on('connection', function(socket) {
-    
     console.log('a user has been connected');
 
-    socket.on('userS', function (data) {
-        console.log(data.username, data.email, data.password)
 
+
+
+
+
+    socket.on('newuser', function(data) {
         handlers.add(data.username, data.email, data.password)
-
     });
 
     socket.on('userL', function(data) {
@@ -66,19 +66,18 @@ io.on('connection', function(socket) {
           });
 
 
-    socket.on('message', function(msg) {
-        var rightnow = new Date();
-        var timerecived = rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds();
-        console.log("Message received at server:" + timerecived);
-        handlers.message(msg.user, msg.content, msg.time, msg.tag);
-        setTimeout(function () {
-            Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
-                io.sockets.emit('newmsg', port);
-            })
-               //.then(
-               //    message => io.sockets.emit('test', message))
-           // io.sockets.emit('newmsg', msg);
-        }, 50);
+    socket.on('newmessage', function(msg) {
+        var id = uuid.v4();
+        handlers.message(id, msg.op, msg.content, msg.time, msg.tag);
+        //setTimeout(function () {
+         //   Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
+        //var messagetoSent = msg;
+       // messagetoSent.id = id;
+        msg.mid = id;
+                io.sockets.emit('newmsg', msg);
+         //   })
+
+     //   }, 50);
     })
 
     socket.on('pname', function(pname) {
@@ -120,7 +119,7 @@ io.on('connection', function(socket) {
 });
 
 io.on('disconnect', function(){
- // console.log('user disconnect')
+ console.log('user disconnect')
 });
 
 
