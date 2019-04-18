@@ -57,6 +57,8 @@ function addMessage (mid, op, content, time, tag){
 
 
 //find Profile Name
+
+
 function findProfileMessages(profileName){
    var content = [];
     return new Promise(function(resolve, reject) {
@@ -64,14 +66,13 @@ function findProfileMessages(profileName){
             op: profileName
         })
             .then(doc => {
-                var x = JSON.parse(JSON.stringify(doc));
-                var y = Object.values(x)
-                if (y.length > 3) {
-                    y = y.slice(Math.max(y.length - 3, 1))
+                var messageData = JSON.parse(JSON.stringify(doc));
+                var objectValue = Object.values(messageData);
+                if (objectValue.length > 3) {
+                    objectValue = objectValue.slice(Math.max(objectValue.length - 3, 1))
                 }
 
-                y.forEach(function (element) {
-                  //  console.log(element.content);
+                objectValue.forEach(function (element) {
                     content.push(element.content);
                 });
                 resolve(content)
@@ -80,47 +81,14 @@ function findProfileMessages(profileName){
 
 }
 
-//Search for userProfile
-function search(searchq){
-var searchname;
-return new Promise(function(resolve, reject){
-    User.find({
-        username: searchq
-    })
-    //make this cleaner
-        .then(doc =>{
-           var x = JSON.parse(JSON.stringify(doc))
-            x.forEach(function (element) {
-                searchname = element.username;
-                resolve(searchname)
-            });
-        })
-            .catch(err =>{
-                reject(err);
-            })
-})
-}
 
-function searchtag(searchqt){
-    return new Promise(function(resolve, reject){
-        Message.find({
-            tag: searchqt
-        })
-        //make this cleaner
-            .then(doc =>{
-                var x = JSON.parse(JSON.stringify(doc))
-                    resolve(x)
-            })
-            .catch(err =>{
-                reject(err);
-            })
-    })
-}
+
+
+
 module.exports = {
     message: addMessage,
     check: checkUserDB,
     add: addUser,
     findPM: findProfileMessages,
-    search: search,
-    searchtag: searchtag
+
 };

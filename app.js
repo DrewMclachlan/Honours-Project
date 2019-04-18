@@ -17,16 +17,7 @@ app.use(cookieParser());
 
 //change this back to public during development
 app.use(express.static(path.join(__dirname, 'client/build')));
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
 
-//Session
-app.use(session({
-    secret: 'drew',
-    saveUninitialized: false,
-    resave: false
-}));
 
 const db = require('mongoose');
 db.connect('mongodb://localhost:27017/hpDatabase')

@@ -31,7 +31,7 @@ app.set('port', port);
 
 
 var server = http.createServer(app);
-
+//called when the client is first connected
 var io = require('socket.io').listen(server);
 app.io = io;
 io.on('connection', function(socket) {
@@ -41,11 +41,12 @@ io.on('connection', function(socket) {
 
 
 
-
+    //called on sign up
     socket.on('newuser', function(data) {
         handlers.add(data.username, data.email, data.password)
     });
 
+    //called on login
     socket.on('userL', function(data) {
       handlers.check(data.username, data.password)
           .then(function(result){
@@ -58,6 +59,7 @@ io.on('connection', function(socket) {
           })
     });
 
+    //caled when client first connects to send all mesages
     socket.on('send', function(){
         setTimeout(function(){
             Message.find()
@@ -65,46 +67,24 @@ io.on('connection', function(socket) {
         }, 10);
           });
 
-
+//called when new message
     socket.on('newmessage', function(msg) {
         var id = uuid.v4();
-        handlers.message(id, msg.op, msg.content, msg.time, msg.tag);
-        //setTimeout(function () {
-         //   Message.find().sort({_id: -1}).limit(1).exec(function(err, port){
-        //var messagetoSent = msg;
-       // messagetoSent.id = id;
         msg.mid = id;
-                io.sockets.emit('newmsg', msg);
-         //   })
+        io.sockets.emit('newmsg', msg);
+        handlers.message(id, msg.op, msg.content, msg.time, msg.tag);
+    });
 
-     //   }, 50);
-    })
 
-    socket.on('pname', function(pname) {
+//called when profile username is sent
+    socket.on('profileUsername', function(pname) {
         console.log(pname);
         profile(pname)
     });
 
-    socket.on('search', function(data){
-        handlers.search(data)
-            .then(function(searchname){
-                console.log(searchname);
-                //add validation
-                profile(searchname)
-            })
-    })
-
-    socket.on('tag', function(data){
-        handlers.searchtag(data)
-            .then(function(taggedmsg){
-                console.log(taggedmsg);
-                socket.emit('taggedmsg', taggedmsg)
-                 //add validation
-               // profile(searchname)
-            })
-    })
 
 
+    //called to send the data back
     function profile (pname){
         handlers.findPM(pname)
             .then(function(result){

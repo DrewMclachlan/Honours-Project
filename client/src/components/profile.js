@@ -22,7 +22,6 @@ return(
     </CardTitle>
 
     <Collapse isOpen={this.state.collapse}>
-        {console.log("results for profile map", this.props.result)}
     {this.props.result.map(result =>
     <Pmessage key={Math.floor((Math.random() * 100000))} m={result}/>
    )}

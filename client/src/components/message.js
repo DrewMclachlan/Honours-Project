@@ -6,12 +6,15 @@ import CardBody from "reactstrap/es/CardBody";
 import CardFooter from "reactstrap/es/CardBody";
 export default class Message extends React.Component {
 
-   //add: onClick={() => this.handleClick(this.props.u)}
-    //back in
+
     handleClick = function(event){
         const socket = this.props.s;
-        socket.emit('pname', event);
+        var rightnow = new Date()
+        console.log("username clicked:" + rightnow.getHours() + ":" + rightnow.getMinutes() + ":" + rightnow.getSeconds() + ":" + rightnow.getMilliseconds())
+        socket.emit('profileUsername', event);
    };
+
+
     render() {
         return (
             <div>
