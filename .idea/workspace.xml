@@ -170,9 +170,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="14" />
-    <option name="y" value="35" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="545" />
+    <option name="y" value="39" />
     <option name="width" value="1440" />
     <option name="height" value="785" />
   </component>
